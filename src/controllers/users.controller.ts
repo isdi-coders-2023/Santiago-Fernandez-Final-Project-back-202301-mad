@@ -3,7 +3,7 @@ import createDebug from 'debug';
 import { User } from '../entities/user.entity';
 import { Repo } from '../repository/repo.interface';
 import { HTTPError } from '../interfaces/error.js';
-import { Auth, PayloadToken } from '../services/auth';
+import { Auth, PayloadToken } from '../services/auth.js';
 const debug = createDebug('ERP:controller:users');
 export class UsersController {
   constructor(public repo: Repo<User>) {
