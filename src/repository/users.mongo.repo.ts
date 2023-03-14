@@ -54,4 +54,10 @@ export class UsersMongoRepo implements Repo<User> {
       throw new HTTPError(404, 'Record not found', 'Id not found in update');
     return data;
   }
+
+  async count(): Promise<number> {
+    debug('Instantiated at constructor at count method');
+    const data = await UserModel.find().count();
+    return data;
+  }
 }

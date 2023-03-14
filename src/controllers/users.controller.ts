@@ -54,4 +54,17 @@ export class UsersController {
       next(error);
     }
   }
+
+  async count(_req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('count:get');
+      const data = await this.repo.count();
+      resp.status(700);
+      resp.json({
+        count: [data],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
