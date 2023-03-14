@@ -1,11 +1,11 @@
-import path from 'path';
+// Import path from 'path';
 import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { usersRouter } from './routers/users.router.js';
 import createDebug from 'debug';
 import { CustomError } from './interfaces/error.js';
-import { __dirname } from './config.js';
+// Import { __dirname } from './config.js';
 const debug = createDebug('ERP:app');
 export const app = express();
 app.disable('x-powered-by');
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 debug({ __dirname });
-app.use(express.static(path.resolve(__dirname, 'public')));
+// App.use(express.static(path.resolve(__dirname, 'public')));
 
 app.use('/users', usersRouter);
 
