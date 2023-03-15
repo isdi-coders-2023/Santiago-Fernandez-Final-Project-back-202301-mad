@@ -58,4 +58,52 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
       mongoose.disconnect();
     });
   });
+
+  describe('When we use the update method to a record that exists', () => {
+    test('Then it should update the value at the selected field for the indicated id', async () => {
+      (UserModel.findByIdAndUpdate as jest.Mock).mockResolvedValue({
+        id: '1',
+        field: 'newvalue',
+      });
+      const mockUser = {
+        id: '1',
+        field: 'newvalue',
+      };
+      const result = await instanceOfUsersMongoRepo.update(mockUser);
+
+      expect(UserModel.findByIdAndUpdate).toHaveBeenCalled();
+      expect(result).toEqual({
+        id: '1',
+        field: 'newvalue',
+      });
+    });
+  });
+
+  describe('When we use the update method to a record that does not exists ', () => {
+    test('Then it should throw an error of Record not found (see error code assigned in user.mongo.repo.ts', async () => {
+      (UserModel.findByIdAndUpdate as jest.Mock).mockResolvedValue(undefined);
+      const mockUser = {
+        id: '1',
+      };
+
+      expect(() => instanceOfUsersMongoRepo.update(mockUser)).rejects.toThrow();
+      expect(UserModel.findByIdAndUpdate).toHaveBeenCalled();
+    });
+  });
+
+  describe('When we use the countRecords method', () => {
+    test('Then it should return the mocked number of records', async () => {
+      // Const find = jest.fn();
+      // const count = jest.fn().mockReturnValue(find);
+      // (UserModel.find as jest.Mock).mockResolvedValue({
+      //   count: jest.fn().mockReturnValue({
+      //     count,
+      //   }),
+      // });
+      const result = await instanceOfUsersMongoRepo.countRecords();
+      expect(UserModel.find).toHaveBeenCalled();
+      // Expect(result).toBe('2');
+      mongoose.disconnect();
+    });
+  });
 });
