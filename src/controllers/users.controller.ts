@@ -55,10 +55,10 @@ export class UsersController {
     }
   }
 
-  async count(_req: Request, resp: Response, next: NextFunction) {
+  async countRecords(_req: Request, resp: Response, next: NextFunction) {
     try {
       debug('count:get');
-      const data = await this.repo.count();
+      const data = await this.repo.countRecords();
       resp.status(700);
       resp.json({
         count: [data],

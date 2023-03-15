@@ -55,7 +55,7 @@ export class UsersMongoRepo implements Repo<User> {
     return data;
   }
 
-  async count(): Promise<number> {
+  async countRecords(): Promise<number> {
     debug('Instantiated at constructor at count method');
     const data = await UserModel.find().count();
     return data;

@@ -5,5 +5,5 @@ export interface Repo<T> {
   create(_info: Partial<T>): Promise<T>;
   update?(_info: Partial<T>): Promise<T>;
   destroy?(_id: string): Promise<void>;
-  count(): Promise<number>;
+  countRecords(): Promise<number>;
 }
