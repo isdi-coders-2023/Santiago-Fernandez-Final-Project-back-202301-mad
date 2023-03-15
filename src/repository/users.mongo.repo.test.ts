@@ -59,6 +59,21 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
     });
   });
 
+  // describe('When we use the count method', () => {
+    // test('Then it should return the number of records of mocked data', async () => {
+    //   const mockCount = [{ id: '1' }, { id: '2' }];
+    //         const mockCountResult = [2];
+    //   (UserModel.find as jest.Mock).mockImplementation(() => ({
+    //     count: jest.fn().mockImplementation(mockCountResult),
+    //     })),
+    //   }));
+    //   const result = await instanceOfUsersMongoRepo.count();
+    //   expect(UserModel.find).toHaveBeenCalled();
+    //   expect(result).toEqual([{ id: '1' }, { id: '2' }]);
+    //   mongoose.disconnect();
+    // });
+  });
+
   // Describe('When we use the count method', () => {
   //   test.only('Then it should return the one record', async () => {
   //     const mock = { id: '2' };
