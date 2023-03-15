@@ -17,11 +17,11 @@ const salt = 10;
 
 export class Auth {
   static createJWT(payload: PayloadToken) {
-    return jwt.sign(payload, config.jwtSecret as string);
+    return jwt.sign(payload, config.JWT_SECRET as string);
   }
 
   static verifyJWTGettingPayload(token: string) {
-    const result = jwt.verify(token, config.jwtSecret as string);
+    const result = jwt.verify(token, config.JWT_SECRET as string);
     if (typeof result === 'string')
       throw new HTTPError(498, 'Invalid payload', result);
     return result as PayloadToken;
