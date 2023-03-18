@@ -5,15 +5,15 @@ import { Repo } from './repo.interface';
 import { ProductModel } from './products.mongo.model.js';
 const debug = createDebug('ERP:repo:products');
 
-export class UsersMongoRepo implements Repo<Product> {
-  private static instance: UsersMongoRepo;
+export class ProductsMongoRepo implements Repo<Product> {
+  private static instance: ProductsMongoRepo;
 
-  public static getInstance(): UsersMongoRepo {
-    if (!UsersMongoRepo.instance) {
-      UsersMongoRepo.instance = new UsersMongoRepo();
+  public static getInstance(): ProductsMongoRepo {
+    if (!ProductsMongoRepo.instance) {
+      ProductsMongoRepo.instance = new ProductsMongoRepo();
     }
 
-    return UsersMongoRepo.instance;
+    return ProductsMongoRepo.instance;
   }
 
   private constructor() {
@@ -53,6 +53,17 @@ export class UsersMongoRepo implements Repo<Product> {
     if (!data)
       throw new HTTPError(404, 'Record not found', 'Id not found in update');
     return data;
+  }
+
+  async destroy(id: string): Promise<void> {
+    debug(id);
+    const data = await ProductModel.findByIdAndDelete(id);
+    if (!data)
+      throw new HTTPError(
+        404,
+        'Not found',
+        'Delete not possible: id not found'
+      );
   }
 
   async countRecords(): Promise<number> {
