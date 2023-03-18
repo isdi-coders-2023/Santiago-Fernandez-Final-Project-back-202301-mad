@@ -16,7 +16,6 @@ export class UsersController {
       if (!req.body.email || !req.body.passwd)
         throw new HTTPError(401, 'Unauthorized', 'Invalid Email or password');
       req.body.passwd = await Auth.hash(req.body.passwd);
-      // Req.body.things = [];
       const data = await this.repo.create(req.body);
       resp.status(201);
       resp.json({
