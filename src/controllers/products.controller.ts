@@ -3,7 +3,6 @@ import createDebug from 'debug';
 import { Product } from '../entities/product.entity';
 import { Repo } from '../repositories/repo.interface';
 import { HTTPError } from '../interfaces/error.js';
-import { Auth, PayloadToken } from '../services/auth.js';
 const debug = createDebug('ERP:controller:users');
 export class ProductsController {
   constructor(public repo: Repo<Product>) {
@@ -31,23 +30,6 @@ export class ProductsController {
       const data = await this.repo.queryId(getId);
       resp.json({
         results: data,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async register(req: Request, resp: Response, next: NextFunction) {
-    try {
-      debug('register:post');
-      if (!req.body.email || !req.body.passwd)
-        throw new HTTPError(401, 'Unauthorized', 'Invalid Email or password');
-      req.body.passwd = await Auth.hash(req.body.passwd);
-      req.body.things = [];
-      const data = await this.repo.create(req.body);
-      resp.status(201);
-      resp.json({
-        results: [data],
       });
     } catch (error) {
       next(error);
