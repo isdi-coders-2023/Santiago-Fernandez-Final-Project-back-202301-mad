@@ -11,6 +11,5 @@ export const dbConnect = (env?: string) => {
   const finalDBName = finalEnv === 'test' ? DB_NAME + '_Testing' : DB_NAME;
   const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_CLUSTER}/${finalDBName}?retryWrites=true&w=majority`;
   debug(uri);
-  const forcedUri = `mongodb+srv://sfernandez:12345@cluster0.8eu9jh8.mongodb.net/${finalDBName}?retryWrites=true&w=majority`;
-  return mongoose.connect(forcedUri);
+  return mongoose.connect(uri);
 };

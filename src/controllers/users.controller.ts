@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from 'express';
 import createDebug from 'debug';
 import { User } from '../entities/user.entity';
-import { Repo } from '../repository/repo.interface';
+import { Repo } from '../repositories/repo.interface';
 import { HTTPError } from '../interfaces/error.js';
 import { Auth, PayloadToken } from '../services/auth.js';
 const debug = createDebug('ERP:controller:users');
@@ -48,7 +48,7 @@ export class UsersController {
       const token = Auth.createJWT(payload);
       resp.status(202);
       resp.json({
-        token,
+        results: [token],
       });
     } catch (error) {
       next(error);
