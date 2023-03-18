@@ -6,5 +6,5 @@ export type Product = {
   ean: string;
   brand: string;
   image: string;
-  userCreatorId: string;
+  userCreatorEmail: string;
 };
