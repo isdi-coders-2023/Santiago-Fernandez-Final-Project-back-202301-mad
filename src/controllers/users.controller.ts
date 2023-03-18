@@ -16,7 +16,7 @@ export class UsersController {
       if (!req.body.email || !req.body.passwd)
         throw new HTTPError(401, 'Unauthorized', 'Invalid Email or password');
       req.body.passwd = await Auth.hash(req.body.passwd);
-      req.body.things = [];
+      // Req.body.things = [];
       const data = await this.repo.create(req.body);
       resp.status(201);
       resp.json({
@@ -43,7 +43,11 @@ export class UsersController {
       const payload: PayloadToken = {
         id: data[0].id,
         email: data[0].email,
-        role: 'admin',
+        firstName: data[0].firstName,
+        lastName: data[0].lastName,
+        role: data[0].role,
+        image: data[0].image,
+        lastLogging: data[0].lastLogging,
       };
       const token = Auth.createJWT(payload);
       resp.status(202);
