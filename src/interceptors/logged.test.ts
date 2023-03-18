@@ -1,6 +1,4 @@
 import { Response } from 'express';
-import { User } from '../entities/user.entity';
-import { Repo } from '../repositories/repo.interface';
 import { logged, RequestPlus } from '../interceptors/logged';
 import { Auth } from '../services/auth';
 import { HTTPError } from '../interfaces/error';
