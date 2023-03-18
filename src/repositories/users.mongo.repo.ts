@@ -55,6 +55,17 @@ export class UsersMongoRepo implements Repo<User> {
     return data;
   }
 
+  async destroy(id: string): Promise<void> {
+    debug(id);
+    const data = await UserModel.findByIdAndDelete(id);
+    if (!data)
+      throw new HTTPError(
+        404,
+        'Not found',
+        'Delete not possible: id not found'
+      );
+  }
+
   async countRecords(): Promise<number> {
     debug('Instantiated at constructor at count method');
     const data = await UserModel.find().count();
