@@ -9,7 +9,6 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
   describe('When we call this function ', () => {
     test('Then Users Mongo Repo should be instanciated', () => {
       expect(instanceOfUsersMongoRepo).toBeInstanceOf(UsersMongoRepo);
-      mongoose.disconnect();
     });
   });
   describe('When we use the query method', () => {
@@ -17,9 +16,9 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
       const mock = { id: '2' };
       (UserModel.find as jest.Mock).mockResolvedValue(mock);
       const result = await instanceOfUsersMongoRepo.query();
+      mongoose.disconnect();
       expect(UserModel.find).toHaveBeenCalled();
       expect(result).toBe(mock);
-      mongoose.disconnect();
     });
   });
 
@@ -28,9 +27,9 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
       const mock = { id: '2' };
       (UserModel.findById as jest.Mock).mockResolvedValue(mock);
       const result = await instanceOfUsersMongoRepo.queryId('2');
+      mongoose.disconnect();
       expect(UserModel.findById).toHaveBeenCalled();
       expect(result).toBe(mock);
-      mongoose.disconnect();
     });
   });
 
@@ -42,9 +41,9 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
         key: 'some',
         value: 'xd',
       });
+      mongoose.disconnect();
       expect(UserModel.find).toHaveBeenCalled();
       expect(result).toEqual(mock);
-      mongoose.disconnect();
     });
   });
 
@@ -70,12 +69,35 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
         field: 'newvalue',
       };
       const result = await instanceOfUsersMongoRepo.update(mockUser);
-
+      mongoose.disconnect();
       expect(UserModel.findByIdAndUpdate).toHaveBeenCalled();
       expect(result).toEqual({
         id: '1',
         field: 'newvalue',
       });
+    });
+  });
+
+  describe('When we use the destroy method to a record that does not exists ', () => {
+    test('Then it should throw an error of Record not found (see error code assigned in user.mongo.repo.ts', async () => {
+      (UserModel.findByIdAndDelete as jest.Mock).mockResolvedValue(undefined);
+      const mockUserId = '1';
+      mongoose.disconnect();
+      expect(() =>
+        instanceOfUsersMongoRepo.destroy(mockUserId)
+      ).rejects.toThrow();
+      expect(UserModel.findByIdAndDelete).toHaveBeenCalled();
+    });
+  });
+
+  describe('When we use the destroy method to a record that exists', () => {
+    test('Then it should delete the record', async () => {
+      (UserModel.findByIdAndDelete as jest.Mock).mockResolvedValue({});
+      const mockUserId = '2';
+      const result = await instanceOfUsersMongoRepo.destroy(mockUserId);
+      mongoose.disconnect();
+      expect(UserModel.findByIdAndDelete).toHaveBeenCalled();
+      expect(result).toEqual(undefined);
     });
   });
 
@@ -85,18 +107,20 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
       const mockUser = {
         id: '1',
       };
-
+      mongoose.disconnect();
       expect(() => instanceOfUsersMongoRepo.update(mockUser)).rejects.toThrow();
       expect(UserModel.findByIdAndUpdate).toHaveBeenCalled();
     });
   });
+  // PROBLEMA CON EL COUNT METHOD
+  // describe('When we use the countRecords method', () => {
+  //   test('Then it should return the mocked number of records', async () => {
+  //     (UserModel.find().count() as unknown as jest.Mock).mockResolvedValue({
+  //       count: [1],
+  //     });
+  //     await instanceOfUsersMongoRepo.countRecords();
+  //     expect(UserModel.find).toHaveBeenCalled();
+  //     mongoose.disconnect();
+  //   });
+  // });
 });
-
-// PROBLEMA CON EL COUNT METHOD
-// Describe('When we use the countRecords method', () => {
-//   test('Then it should return the mocked number of records', async () => {
-//     const result = await instanceOfUsersMongoRepo.countRecords();
-//     expect(UserModel.find).toHaveBeenCalled();
-//     mongoose.disconnect();
-//   });
-// });
