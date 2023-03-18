@@ -13,7 +13,6 @@ describe('Given AuthInterceptor class', () => {
     search: jest.fn(),
     countRecords: jest.fn(),
   };
-  // Const interceptor = new AuthInterceptor(repo);
 
   const req = {
     body: {},
