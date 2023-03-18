@@ -7,13 +7,7 @@ import { HTTPError } from '../interfaces/error';
 
 jest.mock('../services/auth');
 
-describe('Given AuthInterceptor class', () => {
-  const repo: Repo<User> = {
-    create: jest.fn(),
-    search: jest.fn(),
-    countRecords: jest.fn(),
-  };
-
+describe('Given a logged interceptor', () => {
   const req = {
     body: {},
     params: { id: '' },
@@ -24,7 +18,7 @@ describe('Given AuthInterceptor class', () => {
   } as unknown as Response;
   const next = jest.fn();
 
-  describe('When logged is used', () => {
+  describe('When is used', () => {
     test('Then it should send next if there are NOT Authorization header ', () => {
       (req.get as jest.Mock).mockReturnValue(null);
       logged(req, resp, next);
