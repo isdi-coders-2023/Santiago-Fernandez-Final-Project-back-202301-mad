@@ -1,7 +1,7 @@
 import { UsersController } from './users.controller';
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../entities/user.entity';
-import { Repo } from '../repository/repo.interface';
+import { Repo } from '../repositories/repo.interface';
 import { Auth } from '../services/auth';
 
 jest.mock('../services/auth');
