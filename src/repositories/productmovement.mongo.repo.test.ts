@@ -2,7 +2,7 @@ import { ProductMovementMongoRepo } from './productmovements.mongo.repo.js';
 import { ProductMovementModel } from './productmovements.mongo.model';
 import mongoose from 'mongoose';
 
-jest.mock('./products.mongo.model.js');
+jest.mock('./productmovements.mongo.model.js');
 
 describe('Given a new ProductMovementMongoRepo created with a public static function (to follow singleton patron)', () => {
   const instanceOfProductMovementsMongoRepo =
