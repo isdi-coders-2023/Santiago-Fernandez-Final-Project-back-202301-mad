@@ -13,23 +13,18 @@ const userSchema = new Schema<User>({
   },
   firstName: {
     type: String,
-    required: true,
   },
   lastName: {
     type: String,
-    required: true,
   },
   role: {
     type: String,
-    required: true,
   },
   image: {
     type: String,
-    required: false,
   },
   lastLogging: {
     type: String,
-    required: false,
   },
 });
 

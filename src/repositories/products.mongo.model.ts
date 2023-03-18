@@ -22,10 +22,9 @@ const productSchema = new Schema<Product>({
   },
   image: {
     type: String,
-    required: false,
   },
 
-  userCreatorId: {
+  userCreatorEmail: {
     type: String,
   },
 });
