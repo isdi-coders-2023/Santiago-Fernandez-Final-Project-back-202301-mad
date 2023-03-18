@@ -36,6 +36,19 @@ export class ProductsController {
     }
   }
 
+  async create(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('create:post');
+      const data = await this.repo.create(req.body);
+      resp.status(201);
+      resp.json({
+        results: [data],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async update(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('update-method');
