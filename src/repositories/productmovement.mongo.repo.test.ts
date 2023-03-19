@@ -68,15 +68,12 @@ describe('Given a new ProductMovementMongoRepo created with a public static func
     });
   });
 
-  // PROBLEMA CON EL COUNT METHOD
-  // describe('When we use the countRecords method', () => {
-  //   test('Then it should return the mocked number of records', async () => {
-  //     (ProductMovementModel.find().count() as unknown as jest.Mock).mockResolvedValue({
-  //       count: [1],
-  //     });
-  //     await instanceOfProductMovementsMongoRepo.countRecords();
-  //     expect(ProductMovementModel.find).toHaveBeenCalled();
-  //     mongoose.disconnect();
-  //   });
-  // });
+  describe('When we use the countRecords method', () => {
+    test('Then it should return the mocked number of records', async () => {
+      // (UserModel.countDocuments() as unknown as jest.Mock).mockResolvedValue(1);
+      await instanceOfProductMovementsMongoRepo.countRecords();
+      expect(ProductMovementModel.countDocuments).toHaveBeenCalled();
+      mongoose.disconnect();
+    });
+  });
 });

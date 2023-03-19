@@ -29,6 +29,8 @@ app.get('/', (_req, resp) => {
     info: 'Santiago-Fernandez-Final-Project-back-202301-mad',
     endpoints: {
       users: '/users',
+      products: '/products',
+      productMovements: '/productmovements',
     },
   });
 });

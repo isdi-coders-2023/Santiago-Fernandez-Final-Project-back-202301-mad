@@ -14,11 +14,11 @@ describe('Given the Auth Class', () => {
     const payloadMock = {
       id: '1',
       email: 'test',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      role: 'admin',
-      image: 'image',
-      lastLogging: 'lastLogging',
+      // FirstName: 'firstName',
+      // lastName: 'lastName',
+      // role: 'admin',
+      // image: 'image',
+      // lastLogging: 'lastLogging',
     };
     test('Then, if it has a valid Payload, it should been called', () => {
       Auth.createJWT(payloadMock);
