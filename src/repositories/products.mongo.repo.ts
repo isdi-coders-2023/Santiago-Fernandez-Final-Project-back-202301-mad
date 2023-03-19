@@ -1,11 +1,10 @@
 import createDebug from 'debug';
 import { Product } from '../entities/product.entity';
 import { HTTPError } from '../interfaces/error.js';
-import { Repo } from './repo.interface';
 import { ProductModel } from './products.mongo.model.js';
 const debug = createDebug('ERP:repo:products');
 
-export class ProductsMongoRepo implements Repo<Product> {
+export class ProductsMongoRepo {
   private static instance: ProductsMongoRepo;
 
   public static getInstance(): ProductsMongoRepo {
@@ -68,7 +67,7 @@ export class ProductsMongoRepo implements Repo<Product> {
 
   async countRecords(): Promise<number> {
     debug('Instantiated at constructor at count method');
-    const data = await ProductModel.find().count();
+    const data = await ProductModel.countDocuments();
     return data;
   }
 }

@@ -47,7 +47,7 @@ export class ProductMovementMongoRepo {
 
   async countRecords(): Promise<number> {
     debug('Instantiated at constructor at count method');
-    const data = await ProductMovementModel.find().count();
+    const data = await ProductMovementModel.countDocuments();
     return data;
   }
 }

@@ -118,15 +118,12 @@ describe('Given a new ProductsMongoRepo created with a public static function (t
       expect(ProductModel.findByIdAndUpdate).toHaveBeenCalled();
     });
   });
-  // PROBLEMA CON EL COUNT METHOD
-  // describe('When we use the countRecords method', () => {
-  //   test('Then it should return the mocked number of records', async () => {
-  //     (UserModel.find().count() as unknown as jest.Mock).mockResolvedValue({
-  //       count: [1],
-  //     });
-  //     await instanceOfUsersMongoRepo.countRecords();
-  //     expect(UserModel.find).toHaveBeenCalled();
-  //     mongoose.disconnect();
-  //   });
-  // });
+  describe('When we use the countRecords method', () => {
+    test('Then it should return the mocked number of records', async () => {
+      // (UserModel.countDocuments() as unknown as jest.Mock).mockResolvedValue(1);
+      await instanceOfProductsMongoRepo.countRecords();
+      expect(ProductModel.countDocuments).toHaveBeenCalled();
+      mongoose.disconnect();
+    });
+  });
 });
