@@ -42,11 +42,6 @@ export class UsersController {
       const payload: PayloadToken = {
         id: data[0].id,
         email: data[0].email,
-        // FirstName: data[0].firstName,
-        // lastName: data[0].lastName,
-        // role: data[0].role,
-        // image: data[0].image,
-        // lastLogging: data[0].lastLogging,
       };
 
       const token = Auth.createJWT(payload);
