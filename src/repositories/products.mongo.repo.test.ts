@@ -11,16 +11,6 @@ describe('Given a new ProductsMongoRepo created with a public static function (t
       expect(instanceOfProductsMongoRepo).toBeInstanceOf(ProductsMongoRepo);
     });
   });
-  describe('When we use the query method', () => {
-    test('Then it should return the mocked data', async () => {
-      const mock = { id: '2' };
-      (ProductModel.find as jest.Mock).mockResolvedValue(mock);
-      const result = await instanceOfProductsMongoRepo.query();
-      mongoose.disconnect();
-      expect(ProductModel.find).toHaveBeenCalled();
-      expect(result).toBe(mock);
-    });
-  });
 
   describe('When we use the queryId method', () => {
     test('Then it should return the mocked data', async () => {
@@ -30,20 +20,6 @@ describe('Given a new ProductsMongoRepo created with a public static function (t
       mongoose.disconnect();
       expect(ProductModel.findById).toHaveBeenCalled();
       expect(result).toBe(mock);
-    });
-  });
-
-  describe('When the search method is used', () => {
-    test('Then, it should return the searched mocked data', async () => {
-      const mock = { id: '2' };
-      (ProductModel.find as jest.Mock).mockResolvedValue(mock);
-      const result = await instanceOfProductsMongoRepo.search({
-        key: 'some',
-        value: 'xd',
-      });
-      mongoose.disconnect();
-      expect(ProductModel.find).toHaveBeenCalled();
-      expect(result).toEqual(mock);
     });
   });
 
@@ -116,14 +92,6 @@ describe('Given a new ProductsMongoRepo created with a public static function (t
         instanceOfProductsMongoRepo.update(mockUser)
       ).rejects.toThrow();
       expect(ProductModel.findByIdAndUpdate).toHaveBeenCalled();
-    });
-  });
-  describe('When we use the countRecords method', () => {
-    test('Then it should return the mocked number of records', async () => {
-      // (UserModel.countDocuments() as unknown as jest.Mock).mockResolvedValue(1);
-      await instanceOfProductsMongoRepo.countRecords();
-      expect(ProductModel.countDocuments).toHaveBeenCalled();
-      mongoose.disconnect();
     });
   });
 });

@@ -19,9 +19,21 @@ export class ProductsMongoRepo {
     debug('Instantiated at constructor');
   }
 
-  async query(): Promise<Product[]> {
-    debug('Instantiated at constructor at query method');
-    const data = await ProductModel.find();
+  async getByFilterWithPaginationAndOrder(query: {
+    filterField: string;
+    filterValue: string;
+    filterSet: number;
+    filterRecordsPerSet: number;
+    orderField: string;
+  }): Promise<Product[]> {
+    debug('Instantiated at constructor at getByFilterWithPagination method');
+    const data = await ProductModel.find({
+      [query.filterField]: query.filterValue,
+    })
+      .skip((query.filterSet - 1) * query.filterRecordsPerSet)
+      .limit(query.filterRecordsPerSet)
+      .sort(query.orderField);
+
     return data;
   }
 
@@ -29,12 +41,6 @@ export class ProductsMongoRepo {
     debug('Instantiated at constructor at queryId method');
     const data = await ProductModel.findById(id);
     if (!data) throw new HTTPError(404, 'Not found', 'Id not found in queryId');
-    return data;
-  }
-
-  async search(query: { key: string; value: unknown }): Promise<Product[]> {
-    debug('Instantiated at constructor at search method');
-    const data = await ProductModel.find({ [query.key]: query.value });
     return data;
   }
 
@@ -65,9 +71,14 @@ export class ProductsMongoRepo {
       );
   }
 
-  async countRecords(): Promise<number> {
+  async countFilteredRecords(query: {
+    filterField: string;
+    filterValue: string;
+  }): Promise<number> {
     debug('Instantiated at constructor at count method');
-    const data = await ProductModel.countDocuments();
+    const data = await ProductModel.find({
+      [query.filterField]: query.filterValue,
+    }).countDocuments();
     return data;
   }
 }

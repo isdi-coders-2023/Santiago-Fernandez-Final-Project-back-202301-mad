@@ -9,12 +9,16 @@ export class ProductsController {
     debug('Instantiate');
   }
 
-  async getAll(_req: Request, resp: Response, next: NextFunction) {
+  async getByFilterWithPaginationAndOrder(
+    req: Request,
+    resp: Response,
+    next: NextFunction
+  ) {
     try {
-      debug('getAll');
-      const data = await this.repo.query();
+      debug('getByFilterWithPaginationAndOrder');
+      const data = await this.repo.getByFilterWithPaginationAndOrder(req.body);
       resp.json({
-        results: data,
+        results: [data],
       });
     } catch (error) {
       next(error);
@@ -23,10 +27,7 @@ export class ProductsController {
 
   async getById(req: Request, resp: Response, next: NextFunction) {
     try {
-      debug('getById');
       const getId = req.params.id;
-      debug(getId);
-
       const data = await this.repo.queryId(getId);
       resp.json({
         results: data,
@@ -71,10 +72,8 @@ export class ProductsController {
 
   async delete(req: Request, resp: Response, next: NextFunction) {
     try {
-      debug('delete');
+      debug('delete-method');
       const deleteId = req.params.id;
-      debug(deleteId);
-
       const data = await this.repo.destroy(deleteId);
       resp.json({
         results: [data],
@@ -84,13 +83,13 @@ export class ProductsController {
     }
   }
 
-  async countRecords(_req: Request, resp: Response, next: NextFunction) {
+  async countFilteredRecords(req: Request, resp: Response, next: NextFunction) {
     try {
-      debug('count:get');
-      const data = await this.repo.countRecords();
-      resp.status(700);
+      debug('countFilteredRecords-method');
+      const data = await this.repo.countFilteredRecords(req.body);
+      resp.status(200);
       resp.json({
-        count: [data],
+        results: [data],
       });
     } catch (error) {
       next(error);

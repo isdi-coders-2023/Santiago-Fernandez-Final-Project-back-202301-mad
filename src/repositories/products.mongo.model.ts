@@ -27,6 +27,13 @@ const productSchema = new Schema<Product>({
   userCreatorEmail: {
     type: String,
   },
+
+  costPerUnit: {
+    type: Number,
+  },
+  pricePerUnit: {
+    type: Number,
+  },
 });
 
 productSchema.set('toJSON', {

@@ -7,4 +7,6 @@ export type Product = {
   brand: string;
   image: string;
   userCreatorEmail: string;
+  costPerUnit: number;
+  pricePerUnit: number;
 };

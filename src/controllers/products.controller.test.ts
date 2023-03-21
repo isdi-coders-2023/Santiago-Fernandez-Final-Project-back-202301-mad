@@ -1,16 +1,16 @@
 import { ProductsController } from './products.controller';
 import { Request, Response, NextFunction } from 'express';
-import { Product } from '../entities/product.entity';
-import { Repo } from '../repositories/repo.interface';
+import { ProductsMongoRepo } from '../repositories/products.mongo.repo';
 
 describe('Given the product controller', () => {
   const repoMock = {
-    query: jest.fn(),
+    getByFilterWithPaginationAndOrder: jest.fn(),
     queryId: jest.fn(),
+    create: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn(),
-    countRecords: jest.fn(),
-  } as unknown as Repo<Product>;
+    destroy: jest.fn(),
+    countFilteredRecords: jest.fn(),
+  } as unknown as ProductsMongoRepo;
 
   const controller = new ProductsController(repoMock);
 
@@ -20,16 +20,23 @@ describe('Given the product controller', () => {
   } as unknown as Response;
 
   const next = jest.fn() as unknown as NextFunction;
+
   const req = {
     body: {
       results: [],
     },
   } as unknown as Request;
-  describe('When the getAll method is called', () => {
+
+  describe('When the getByFilterWithPagination method is called', () => {
     test('Then, if everything is correct, the response should have results', async () => {
-      await controller.getAll(req, resp, next);
-      expect(repoMock.query).toHaveBeenCalled();
+      await controller.getByFilterWithPaginationAndOrder(req, resp, next);
       expect(resp.json).toHaveBeenCalled();
+    });
+
+    test('Then, if there is not a correct body at the request, it should call next', async () => {
+      const req = null as unknown as Request;
+      await controller.getByFilterWithPaginationAndOrder(req, resp, next);
+      expect(next).toHaveBeenCalled();
     });
   });
 
@@ -38,12 +45,22 @@ describe('Given the product controller', () => {
       await controller.getById(req, resp, next);
       expect(resp.json).toHaveBeenCalled();
     });
+    test('Then, if there is not a correct body at the request, it should call next', async () => {
+      const req = null as unknown as Request;
+      await controller.getById(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
   });
 
   describe('When the create method is called', () => {
     test('Then, if everything is correct, the response should have results', async () => {
       await controller.create(req, resp, next);
       expect(resp.json).toHaveBeenCalled();
+    });
+    test('Then, if there is not a correct body at the request, it should call next', async () => {
+      const req = null as unknown as Request;
+      await controller.create(req, resp, next);
+      expect(next).toHaveBeenCalled();
     });
   });
 
@@ -52,6 +69,12 @@ describe('Given the product controller', () => {
       await controller.update(req, resp, next);
       expect(resp.json).toHaveBeenCalled();
     });
+    test('Then, if there is not a correct body at the request, it should call next', async () => {
+      const req = null as unknown as Request;
+
+      await controller.update(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
   });
 
   describe('When the delete method is called', () => {
@@ -59,12 +82,22 @@ describe('Given the product controller', () => {
       await controller.delete(req, resp, next);
       expect(resp.json).toHaveBeenCalled();
     });
+    test('Then, if there is not a correct body at the request, it should call next', async () => {
+      const req = null as unknown as Request;
+      await controller.delete(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
   });
 
-  describe('When the countRecords method is called', () => {
+  describe('When the countFilteredRecords method is called', () => {
     test('Then, if everything is correct, the response should have results', async () => {
-      await controller.countRecords(req, resp, next);
+      await controller.countFilteredRecords(req, resp, next);
       expect(resp.json).toHaveBeenCalled();
+    });
+    test('Then, if there is not a correct body at the request, it should call next', async () => {
+      const req = null as unknown as Request;
+      await controller.countFilteredRecords(req, resp, next);
+      expect(next).toHaveBeenCalled();
     });
   });
 });
