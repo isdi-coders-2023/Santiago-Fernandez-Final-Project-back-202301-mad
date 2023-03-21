@@ -113,7 +113,7 @@ describe('Given a new UsersMongoRepo created with a public static function (to f
     });
   });
   describe('When we use the countRecords method', () => {
-    test.only('Then it should return the mocked number of records', async () => {
+    test('Then it should return the mocked number of records', async () => {
       // (UserModel.countDocuments() as unknown as jest.Mock).mockResolvedValue(1);
       await instanceOfUsersMongoRepo.countRecords();
       expect(UserModel.countDocuments).toHaveBeenCalled();

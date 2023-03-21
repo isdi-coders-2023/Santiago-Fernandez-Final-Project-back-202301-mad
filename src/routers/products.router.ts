@@ -11,4 +11,8 @@ debug('loaded');
 const repo = ProductsMongoRepo.getInstance();
 const controller = new ProductsController(repo);
 
-productsRouter.get('/count', controller.countRecords.bind(controller));
+productsRouter.get(
+  '/gallery',
+  controller.getByFilterWithPaginationAndOrder.bind(controller)
+);
+productsRouter.get('/count', controller.countFilteredRecords.bind(controller));
