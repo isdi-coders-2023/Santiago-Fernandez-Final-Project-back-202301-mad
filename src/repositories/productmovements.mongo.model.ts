@@ -6,8 +6,11 @@ const productMovementSchema = new Schema<ProductMovement>({
     type: String,
     required: true,
   },
-  date: {
+  batch: {
     type: String,
+  },
+  date: {
+    type: Date,
   },
   type: {
     type: String,
@@ -18,14 +21,11 @@ const productMovementSchema = new Schema<ProductMovement>({
   units: {
     type: Number,
   },
-  unitaryCost: {
+  costPerUnit: {
     type: Number,
   },
-  unitaryPrice: {
+  pricePerUnit: {
     type: Number,
-  },
-  userCreatorEmail: {
-    type: String,
   },
 });
 

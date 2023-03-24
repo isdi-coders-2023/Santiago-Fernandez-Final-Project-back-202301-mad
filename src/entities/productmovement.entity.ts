@@ -1,11 +1,12 @@
 export type ProductMovement = {
   id: string;
   productSku: string;
-  date: string;
+  batch: string;
+  date: Date;
   type: string;
   typeId: string;
+  store: string;
   units: number;
-  unitaryCost: number;
-  unitaryPrice: number;
-  userCreatorEmail: string;
+  costPerUnit: number;
+  pricePerUnit: number;
 };
