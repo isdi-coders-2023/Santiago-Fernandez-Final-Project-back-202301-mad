@@ -18,7 +18,7 @@ export class ProductsController {
       debug('getByFilterWithPaginationAndOrder');
       const data = await this.repo.getByFilterWithPaginationAndOrder(req.body);
       resp.json({
-        results: [data],
+        results: data,
       });
     } catch (error) {
       next(error);
@@ -93,6 +93,7 @@ export class ProductsController {
       });
     } catch (error) {
       next(error);
+      console.log(req.headers.authorization);
     }
   }
 }
