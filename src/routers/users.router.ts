@@ -15,3 +15,4 @@ const controller = new UsersController(repo);
 usersRouter.post('/register', controller.register.bind(controller));
 usersRouter.post('/login', controller.login.bind(controller));
 usersRouter.get('/count', logged, controller.countRecords.bind(controller));
+usersRouter.get('/', logged, controller.query.bind(controller));
