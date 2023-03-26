@@ -2,9 +2,9 @@ export type ProductMovement = {
   id: string;
   productSku: string;
   batch: string;
-  date: Date;
+  date: string;
   type: string;
-  typeId: string;
+  typeId: number;
   store: string;
   units: number;
   costPerUnit: number;

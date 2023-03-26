@@ -50,4 +50,118 @@ export class ProductMovementMongoRepo {
     const data = await ProductMovementModel.countDocuments();
     return data;
   }
+
+  async analytics(): Promise<object> {
+    debug('Instantiated at constructor at analytics method');
+
+    const dataActualInventoryCost = await ProductMovementModel.aggregate([
+      {
+        $addFields: {
+          unitsXunitaryCost: {
+            $multiply: ['$units', '$costPerUnit'],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: 'Total',
+          totalValue: {
+            $sum: '$unitsXunitaryCost',
+          },
+        },
+      },
+      {
+        $addFields: {
+          total: {
+            $substr: ['$_id', 0, 5],
+          },
+        },
+      },
+    ]);
+
+    const dataAnnualInventoryCostVariation =
+      await ProductMovementModel.aggregate([
+        {
+          $addFields: {
+            yearOfDate: {
+              $substr: ['$Date', 0, 4],
+            },
+            unitsXunitaryCost: {
+              $multiply: ['$units', '$costPerUnit'],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$yearOfDate',
+            totalValue: {
+              $sum: '$unitsXunitaryCost',
+            },
+          },
+        },
+        {
+          $addFields: {
+            yearOfDate: {
+              $substr: ['$_id', 0, 4],
+            },
+          },
+        },
+        {
+          $sort: {
+            yearOfDate: 1,
+          },
+        },
+      ]);
+
+    const dataMonthlyInventoryCostVariation =
+      await ProductMovementModel.aggregate([
+        {
+          $addFields: {
+            yearOfDate: {
+              $substr: ['$Date', 0, 4],
+            },
+            monthOfDate: {
+              $substr: ['$Date', 5, 2],
+            },
+            dayOfDate: {
+              $substr: ['$Date', 8, 2],
+            },
+            yearMonthOfDate: {
+              $substr: ['$Date', 0, 7],
+            },
+            unitsXunitaryCost: {
+              $multiply: ['$units', '$costPerUnit'],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$yearMonthOfDate',
+            totalValue: {
+              $sum: '$unitsXunitaryCost',
+            },
+          },
+        },
+        {
+          $addFields: {
+            yearMonthOfDate: {
+              $substr: ['$_id', 0, 7],
+            },
+          },
+        },
+        {
+          $sort: {
+            yearMonthOfDate: 1,
+          },
+        },
+      ]);
+
+    return [
+      {
+        ActualInventoryCost: dataActualInventoryCost,
+        AnnualInventoryCostVariation: dataAnnualInventoryCostVariation,
+        MonthlyInventoryCostVariation: dataMonthlyInventoryCostVariation,
+      },
+    ];
+  }
 }

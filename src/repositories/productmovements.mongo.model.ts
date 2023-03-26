@@ -10,13 +10,13 @@ const productMovementSchema = new Schema<ProductMovement>({
     type: String,
   },
   date: {
-    type: Date,
+    type: String,
   },
   type: {
     type: String,
   },
   typeId: {
-    type: String,
+    type: Number,
   },
   units: {
     type: Number,
@@ -40,5 +40,5 @@ productMovementSchema.set('toJSON', {
 export const ProductMovementModel = model(
   'ProductMovement',
   productMovementSchema,
-  'productMovements'
+  'productmovements'
 );

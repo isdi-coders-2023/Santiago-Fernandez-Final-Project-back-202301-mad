@@ -6,6 +6,7 @@ import { usersRouter } from './routers/users.router.js';
 import createDebug from 'debug';
 import { CustomError } from './interfaces/error.js';
 import { productsRouter } from './routers/products.router.js';
+import { productMovementsRouter } from './routers/productmovements.router.js';
 // Import { __dirname } from './config.js';
 const debug = createDebug('ERP:app');
 export const app = express();
@@ -23,6 +24,7 @@ app.use(cors(corsOptions));
 
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
+app.use('/productmovements', productMovementsRouter);
 
 app.get('/', (_req, resp) => {
   resp.json({

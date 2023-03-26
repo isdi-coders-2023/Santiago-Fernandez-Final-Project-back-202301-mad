@@ -17,6 +17,7 @@ productsRouter.post(
   logged,
   controller.getByFilterWithPaginationAndOrder.bind(controller)
 );
+productsRouter.get('/:id', logged, controller.getById.bind(controller));
 productsRouter.post(
   '/count',
   logged,
