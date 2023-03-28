@@ -37,6 +37,22 @@ export class ProductsController {
     }
   }
 
+  async getByKey(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const getKey = req.params.path;
+      const getValue = req.params.id;
+      const data = await this.repo.queryByKey({
+        key: getKey,
+        value: getValue,
+      });
+      resp.json({
+        results: data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async create(req: Request, resp: Response, next: NextFunction) {
     try {
       debug('create:post');
@@ -94,6 +110,34 @@ export class ProductsController {
     } catch (error) {
       next(error);
       console.log(req.headers.authorization);
+    }
+  }
+
+  async leftJoinProductMovements(
+    req: Request,
+    resp: Response,
+    next: NextFunction
+  ) {
+    try {
+      // Const getId = req.params.id;
+      const data = await this.repo.leftJoinProductMovements();
+      resp.json({
+        results: data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async groupValuesPerField(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const brandToGroup = req.params.id;
+      const data = await this.repo.groupValuesPerField(brandToGroup);
+      resp.json({
+        results: data,
+      });
+    } catch (error) {
+      next(error);
     }
   }
 }

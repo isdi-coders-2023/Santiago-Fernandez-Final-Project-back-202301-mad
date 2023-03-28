@@ -44,6 +44,32 @@ export class ProductsMongoRepo {
     return data;
   }
 
+  async leftJoinProductMovements(): Promise<unknown[]> {
+    debug('Instantiated at constructor at stockById method');
+    const data = await ProductModel.aggregate([
+      {
+        $lookup: {
+          from: 'productmovements',
+          localField: 'sku',
+          foreignField: 'productSku',
+          as: 'resultLeftJoin',
+        },
+      },
+    ]);
+
+    if (!data)
+      throw new HTTPError(404, 'Not found', 'Id not found in stockById');
+    return data;
+  }
+
+  async queryByKey(query: { key: string; value: unknown }): Promise<Product[]> {
+    debug('Instantiated at constructor at queryByKey method');
+    const data = await ProductModel.find({ [query.key]: query.value });
+    if (!data)
+      throw new HTTPError(404, 'Not found', 'Value not found in queryByKey');
+    return data;
+  }
+
   async create(info: Partial<Product>): Promise<Product> {
     debug('Instantiated at constructor at create method');
     const data = await ProductModel.create(info);
@@ -80,5 +106,26 @@ export class ProductsMongoRepo {
       [query.filterField]: query.filterValue,
     }).countDocuments();
     return data;
+  }
+
+  async groupValuesPerField(field: string): Promise<unknown[]> {
+    debug('Instantiated at constructor at groupValuesPerField method');
+    const data = await ProductModel.aggregate([
+      {
+        $group: {
+          _id: '$' + field,
+          value: {
+            $min: '$' + field,
+          },
+        },
+      },
+    ]);
+
+    if (!data)
+      throw new HTTPError(404, 'Not found', 'Id not found in stockById');
+
+    const dataMap = data.map((item: any) => item.value, 'brand');
+
+    return dataMap;
   }
 }
