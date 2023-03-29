@@ -21,10 +21,9 @@ app.use(cors(corsOptions));
 
 // Debug({ __dirname });
 // App.use(express.static(path.resolve(__dirname, 'public')));
-
+app.use('/productmovements', productMovementsRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
-app.use('/productmovements', productMovementsRouter);
 
 app.get('/', (_req, resp) => {
   resp.json({
