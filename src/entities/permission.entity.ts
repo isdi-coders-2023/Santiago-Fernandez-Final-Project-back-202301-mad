@@ -3,4 +3,5 @@ export type Permission = {
   userEmail: string;
   collection: string;
   permission: string;
+  active: boolean;
 };
