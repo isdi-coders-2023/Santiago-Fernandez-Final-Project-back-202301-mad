@@ -13,7 +13,29 @@ const repo = ProductMovementMongoRepo.getInstance();
 const controller = new ProductMovementsController(repo);
 
 productMovementsRouter.get(
+  '/count',
+  logged,
+
+  controller.countFilteredRecords.bind(controller)
+);
+
+productMovementsRouter.get(
   '/analytics',
+  logged,
 
   controller.analytics.bind(controller)
+);
+
+productMovementsRouter.post(
+  '/gallery',
+  logged,
+
+  controller.getByFilterWithPaginationAndOrder.bind(controller)
+);
+
+productMovementsRouter.get(
+  '/:id',
+  logged,
+
+  controller.getById.bind(controller)
 );

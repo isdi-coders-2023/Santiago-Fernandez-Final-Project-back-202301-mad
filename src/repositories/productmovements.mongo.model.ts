@@ -16,7 +16,11 @@ const productMovementSchema = new Schema<ProductMovement>({
     type: String,
   },
   typeId: {
-    type: Number,
+    type: String,
+  },
+
+  store: {
+    type: String,
   },
   units: {
     type: Number,

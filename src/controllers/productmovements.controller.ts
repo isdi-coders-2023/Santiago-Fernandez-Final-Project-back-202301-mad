@@ -20,4 +20,47 @@ export class ProductMovementsController {
       next(error);
     }
   }
+
+  async getByFilterWithPaginationAndOrder(
+    _req: Request,
+    resp: Response,
+    next: NextFunction
+  ) {
+    try {
+      const data = await this.repo.getByFilterWithPaginationAndOrder({} as any);
+      resp.json({
+        results: data,
+      });
+    } catch (error) {
+      throw new HTTPError(400, 'Gallery Not found', 'Gallery Not found');
+      next(error);
+    }
+  }
+
+  async getById(req: Request, resp: Response, next: NextFunction) {
+    debug('entrando en el controller');
+    try {
+      const getId = req.params.id;
+      const data = await this.repo.queryId(getId);
+      resp.json({
+        results: data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async countFilteredRecords(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('countFilteredRecords-method');
+      const data = await this.repo.countFilteredRecords(req.body);
+      resp.status(200);
+      resp.json({
+        results: [data],
+      });
+    } catch (error) {
+      next(error);
+      console.log(req.headers.authorization);
+    }
+  }
 }

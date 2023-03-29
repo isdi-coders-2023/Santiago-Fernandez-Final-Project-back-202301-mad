@@ -2,7 +2,7 @@ import createDebug from 'debug';
 import { ProductMovement } from '../entities/productmovement.entity';
 import { HTTPError } from '../interfaces/error.js';
 import { ProductMovementModel } from './productmovements.mongo.model.js';
-const debug = createDebug('ERP:repo:products');
+const debug = createDebug('ERP:repo:productmovements');
 
 export class ProductMovementMongoRepo {
   private static instance: ProductMovementMongoRepo;
@@ -163,5 +163,47 @@ export class ProductMovementMongoRepo {
         MonthlyInventoryCostVariation: dataMonthlyInventoryCostVariation,
       },
     ];
+  }
+
+  async getByFilterWithPaginationAndOrder(query: {
+    filterField: string;
+    filterValue: string;
+    filterSet: number;
+    filterRecordsPerSet: number;
+    orderField: string;
+  }): Promise<ProductMovement[]> {
+    debug('Instantiated at constructor at getByFilterWithPagination method');
+    const data = await ProductMovementModel.find({
+      [query.filterField]: query.filterValue,
+    })
+      .skip((query.filterSet - 1) * query.filterRecordsPerSet)
+      .limit(query.filterRecordsPerSet)
+      .sort(query.orderField);
+
+    return data;
+  }
+
+  async queryId(id: string): Promise<ProductMovement> {
+    debug('Instantiated at constructor at queryId method');
+    const data = await ProductMovementModel.findById(id);
+    debug('problema con query id');
+    if (!data)
+      throw new HTTPError(
+        444,
+        'Id not found in queryId',
+        'Id not found in queryId'
+      );
+    return data;
+  }
+
+  async countFilteredRecords(query: {
+    filterField: string;
+    filterValue: string;
+  }): Promise<number> {
+    debug('Instantiated at constructor at count method');
+    const data = await ProductMovementModel.find({
+      [query.filterField]: query.filterValue,
+    }).countDocuments();
+    return data;
   }
 }
