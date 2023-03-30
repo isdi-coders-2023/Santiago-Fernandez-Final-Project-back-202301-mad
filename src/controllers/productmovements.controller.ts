@@ -60,7 +60,6 @@ export class ProductMovementsController {
       });
     } catch (error) {
       next(error);
-      console.log(req.headers.authorization);
     }
   }
 }

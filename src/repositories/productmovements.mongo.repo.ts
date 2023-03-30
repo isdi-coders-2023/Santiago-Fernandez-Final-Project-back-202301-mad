@@ -179,7 +179,6 @@ export class ProductMovementMongoRepo {
       .skip((query.filterSet - 1) * query.filterRecordsPerSet)
       .limit(query.filterRecordsPerSet)
       .sort(query.orderField);
-
     return data;
   }
 

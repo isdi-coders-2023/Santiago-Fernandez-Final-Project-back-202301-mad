@@ -109,7 +109,6 @@ export class ProductsController {
       });
     } catch (error) {
       next(error);
-      console.log(req.headers.authorization);
     }
   }
 

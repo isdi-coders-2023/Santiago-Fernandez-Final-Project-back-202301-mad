@@ -12,10 +12,11 @@ debug('loaded');
 const repo = UsersMongoRepo.getInstance();
 const controller = new UsersController(repo);
 
+usersRouter.get('/count', controller.countRecords.bind(controller));
+usersRouter.get('/', controller.query.bind(controller));
 usersRouter.post('/register', controller.register.bind(controller));
 usersRouter.post('/login', controller.login.bind(controller));
-usersRouter.get('/count', logged, controller.countRecords.bind(controller));
-usersRouter.get('/', logged, controller.query.bind(controller));
+
 usersRouter.post(
   '/login-with-token',
   logged,

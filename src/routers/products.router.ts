@@ -14,17 +14,16 @@ const controller = new ProductsController(repo);
 
 productsRouter.post(
   '/gallery',
-  logged,
+
   controller.getByFilterWithPaginationAndOrder.bind(controller)
 );
 productsRouter.get(
   '/left-join-productmovements',
-  logged,
   controller.leftJoinProductMovements.bind(controller)
 );
 productsRouter.post(
   '/count',
-  logged,
+
   controller.countFilteredRecords.bind(controller)
 );
 
@@ -32,5 +31,5 @@ productsRouter.post(
   '/group-values-per-field/:id',
   controller.groupValuesPerField.bind(controller)
 );
-productsRouter.get('/:path/:id', logged, controller.getByKey.bind(controller));
-productsRouter.get('/:id', logged, controller.getById.bind(controller));
+productsRouter.get('/:path/:id', controller.getByKey.bind(controller));
+productsRouter.get('/:id', controller.getById.bind(controller));
