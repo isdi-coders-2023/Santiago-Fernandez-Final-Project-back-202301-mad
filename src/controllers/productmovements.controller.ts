@@ -62,4 +62,16 @@ export class ProductMovementsController {
       next(error);
     }
   }
+
+  async countRecords(req: Request, resp: Response, next: NextFunction) {
+    try {
+      debug('countFilteredRecords-method');
+      const data = await this.repo.countRecords();
+      resp.json({
+        results: [data],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

@@ -22,7 +22,6 @@ productMovementsRouter.get(
 productMovementsRouter.get(
   '/analytics',
   logged,
-
   controller.analytics.bind(controller)
 );
 

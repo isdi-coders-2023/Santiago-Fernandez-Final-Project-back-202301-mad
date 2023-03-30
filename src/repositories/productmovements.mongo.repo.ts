@@ -84,7 +84,7 @@ export class ProductMovementMongoRepo {
         {
           $addFields: {
             yearOfDate: {
-              $substr: ['$Date', 0, 4],
+              $substr: ['$date', 0, 4],
             },
             unitsXunitaryCost: {
               $multiply: ['$units', '$costPerUnit'],
@@ -118,16 +118,16 @@ export class ProductMovementMongoRepo {
         {
           $addFields: {
             yearOfDate: {
-              $substr: ['$Date', 0, 4],
+              $substr: ['$date', 0, 4],
             },
             monthOfDate: {
-              $substr: ['$Date', 5, 2],
+              $substr: ['$date', 5, 2],
             },
             dayOfDate: {
-              $substr: ['$Date', 8, 2],
+              $substr: ['$date', 8, 2],
             },
             yearMonthOfDate: {
-              $substr: ['$Date', 0, 7],
+              $substr: ['$date', 0, 7],
             },
             unitsXunitaryCost: {
               $multiply: ['$units', '$costPerUnit'],
@@ -185,7 +185,7 @@ export class ProductMovementMongoRepo {
   async queryId(id: string): Promise<ProductMovement> {
     debug('Instantiated at constructor at queryId method');
     const data = await ProductMovementModel.findById(id);
-    debug('problema con query id');
+    debug('query id');
     if (!data)
       throw new HTTPError(
         444,
