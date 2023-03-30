@@ -97,6 +97,18 @@ export class ProductsMongoRepo {
       );
   }
 
+  async deleteByKey(deleteKey: string, deleteValue: string): Promise<void> {
+    const data = await ProductModel.findByIdAndDelete({
+      [deleteKey]: deleteValue,
+    });
+    if (!data)
+      throw new HTTPError(
+        404,
+        'Not found',
+        'Delete not possible: key and value not found'
+      );
+  }
+
   async countFilteredRecords(query: {
     filterField: string;
     filterValue: string;
