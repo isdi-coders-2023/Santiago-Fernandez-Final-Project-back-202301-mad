@@ -24,16 +24,18 @@ productsRouter.get(
 );
 productsRouter.post(
   '/count',
+  logged,
 
   controller.countFilteredRecords.bind(controller)
 );
 
 productsRouter.post(
   '/group-values-per-field/:id',
+  logged,
   controller.groupValuesPerField.bind(controller)
 );
-productsRouter.post('/', controller.create.bind(controller));
-productsRouter.get('/:path/:id', controller.getByKey.bind(controller));
-productsRouter.get('/:id', controller.getById.bind(controller));
+productsRouter.post('/', logged, controller.create.bind(controller));
+productsRouter.get('/:path/:id', logged, controller.getByKey.bind(controller));
+productsRouter.get('/:id', logged, controller.getById.bind(controller));
 // ProductsRouter.delete('/:path/:id', controller.deleteByKey.bind(controller));
-productsRouter.delete('/:id', controller.delete.bind(controller));
+productsRouter.delete('/:id', logged, controller.delete.bind(controller));

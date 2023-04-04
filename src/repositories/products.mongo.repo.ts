@@ -19,7 +19,7 @@ export class ProductsMongoRepo {
     debug('Instantiated at constructor');
   }
 
-  async getByFilterWithPaginationAndOrder(query: {
+  async getByFilterWithPaginationAndOrder(filter: {
     filterField: string;
     filterValue: string;
     filterSet: number;
@@ -28,11 +28,11 @@ export class ProductsMongoRepo {
   }): Promise<Product[]> {
     debug('Instantiated at constructor at getByFilterWithPagination method');
     const data = await ProductModel.find({
-      [query.filterField]: query.filterValue,
+      [filter.filterField]: filter.filterValue,
     })
-      .skip((query.filterSet - 1) * query.filterRecordsPerSet)
-      .limit(query.filterRecordsPerSet)
-      .sort(query.orderField);
+      .skip((filter.filterSet - 1) * filter.filterRecordsPerSet)
+      .limit(filter.filterRecordsPerSet)
+      .sort(filter.orderField);
 
     return data;
   }

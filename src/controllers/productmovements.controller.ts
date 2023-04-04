@@ -22,12 +22,12 @@ export class ProductMovementsController {
   }
 
   async getByFilterWithPaginationAndOrder(
-    _req: Request,
+    req: Request,
     resp: Response,
     next: NextFunction
   ) {
     try {
-      const data = await this.repo.getByFilterWithPaginationAndOrder({} as any);
+      const data = await this.repo.getByFilterWithPaginationAndOrder(req.body);
       resp.json({
         results: data,
       });

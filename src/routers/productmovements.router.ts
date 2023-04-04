@@ -12,7 +12,7 @@ debug('loaded');
 const repo = ProductMovementMongoRepo.getInstance();
 const controller = new ProductMovementsController(repo);
 
-productMovementsRouter.get(
+productMovementsRouter.post(
   '/count',
   logged,
 
