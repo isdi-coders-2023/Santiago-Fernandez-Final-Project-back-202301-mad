@@ -10,6 +10,7 @@ import { productMovementsRouter } from './routers/productmovements.router.js';
 // Import { __dirname } from './config.js';
 const debug = createDebug('ERP:app');
 export const app = express();
+
 app.disable('x-powered-by');
 
 const corsOptions = {

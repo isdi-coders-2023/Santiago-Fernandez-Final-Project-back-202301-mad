@@ -73,6 +73,12 @@ export class ProductsMongoRepo {
   async create(info: Partial<Product>): Promise<Product> {
     debug('Instantiated at constructor at create method');
     const data = await ProductModel.create(info);
+    if (!data)
+      throw new HTTPError(
+        404,
+        'Not possible to create a new record',
+        'Not possible to create a new record'
+      );
     return data;
   }
 
