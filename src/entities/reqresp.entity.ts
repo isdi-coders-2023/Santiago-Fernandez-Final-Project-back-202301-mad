@@ -3,7 +3,7 @@ export type ReqResp = {
   date: Date;
   userEmail: string;
   userToken: string;
-  req: Request;
-  resp: Response;
+  request: string;
+  response: string;
   effort: string;
 };

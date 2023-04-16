@@ -11,11 +11,11 @@ const userSchema = new Schema<ReqResp>({
   userToken: {
     type: String,
   },
-  req: {
-    type: Object,
+  request: {
+    type: String,
   },
-  resp: {
-    type: Object,
+  response: {
+    type: String,
   },
   effort: {
     type: String,
