@@ -2,7 +2,7 @@ import createDebug from 'debug';
 import { ProductMovement } from '../entities/productmovement.entity';
 import { HTTPError } from '../interfaces/error.js';
 import { ProductMovementModel } from './productmovements.mongo.model.js';
-const debug = createDebug('ERP:repo:products');
+const debug = createDebug('ERP:repo:productmovements');
 
 export class ProductMovementMongoRepo {
   private static instance: ProductMovementMongoRepo;
@@ -48,6 +48,161 @@ export class ProductMovementMongoRepo {
   async countRecords(): Promise<number> {
     debug('Instantiated at constructor at count method');
     const data = await ProductMovementModel.countDocuments();
+    return data;
+  }
+
+  async analytics(): Promise<object> {
+    debug('Instantiated at constructor at analytics method');
+
+    const dataActualInventoryCost = await ProductMovementModel.aggregate([
+      {
+        $addFields: {
+          unitsXunitaryCost: {
+            $multiply: ['$units', '$costPerUnit'],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: 'Total',
+          totalValue: {
+            $sum: '$unitsXunitaryCost',
+          },
+        },
+      },
+      {
+        $addFields: {
+          total: {
+            $substr: ['$_id', 0, 5],
+          },
+        },
+      },
+    ]);
+
+    const dataAnnualInventoryCostVariation =
+      await ProductMovementModel.aggregate([
+        {
+          $addFields: {
+            yearOfDate: {
+              $substr: ['$date', 0, 4],
+            },
+            unitsXunitaryCost: {
+              $multiply: ['$units', '$costPerUnit'],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$yearOfDate',
+            totalValue: {
+              $sum: '$unitsXunitaryCost',
+            },
+          },
+        },
+        {
+          $addFields: {
+            yearOfDate: {
+              $substr: ['$_id', 0, 4],
+            },
+          },
+        },
+        {
+          $sort: {
+            yearOfDate: 1,
+          },
+        },
+      ]);
+
+    const dataMonthlyInventoryCostVariation =
+      await ProductMovementModel.aggregate([
+        {
+          $addFields: {
+            yearOfDate: {
+              $substr: ['$date', 0, 4],
+            },
+            monthOfDate: {
+              $substr: ['$date', 5, 2],
+            },
+            dayOfDate: {
+              $substr: ['$date', 8, 2],
+            },
+            yearMonthOfDate: {
+              $substr: ['$date', 0, 7],
+            },
+            unitsXunitaryCost: {
+              $multiply: ['$units', '$costPerUnit'],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$yearMonthOfDate',
+            totalValue: {
+              $sum: '$unitsXunitaryCost',
+            },
+          },
+        },
+        {
+          $addFields: {
+            yearMonthOfDate: {
+              $substr: ['$_id', 0, 7],
+            },
+          },
+        },
+        {
+          $sort: {
+            yearMonthOfDate: 1,
+          },
+        },
+      ]);
+
+    return [
+      {
+        ActualInventoryCost: dataActualInventoryCost,
+        AnnualInventoryCostVariation: dataAnnualInventoryCostVariation,
+        MonthlyInventoryCostVariation: dataMonthlyInventoryCostVariation,
+      },
+    ];
+  }
+
+  async getByFilterWithPaginationAndOrder(filter: {
+    filterField: string;
+    filterValue: string;
+    filterSet: number;
+    filterRecordsPerSet: number;
+    orderField: string;
+  }): Promise<ProductMovement[]> {
+    debug('Instantiated at constructor at getByFilterWithPagination method');
+    const data = await ProductMovementModel.find({
+      [filter.filterField]: filter.filterValue,
+    })
+      .skip((filter.filterSet - 1) * filter.filterRecordsPerSet)
+      .limit(filter.filterRecordsPerSet)
+      .sort(filter.orderField);
+    return data;
+  }
+
+  async queryId(id: string): Promise<ProductMovement> {
+    debug('Instantiated at constructor at queryId method');
+    const data = await ProductMovementModel.findById(id);
+    debug('query id');
+    if (!data)
+      throw new HTTPError(
+        444,
+        'Id not found in queryId',
+        'Id not found in queryId'
+      );
+    return data;
+  }
+
+  async countFilteredRecords(query: {
+    filterField: string;
+    filterValue: string;
+  }): Promise<number> {
+    debug('Instantiated at constructor at count method');
+    const data = await ProductMovementModel.find({
+      [query.filterField]: query.filterValue,
+    }).countDocuments();
     return data;
   }
 }

@@ -18,7 +18,7 @@ export class ProductsController {
       debug('getByFilterWithPaginationAndOrder');
       const data = await this.repo.getByFilterWithPaginationAndOrder(req.body);
       resp.json({
-        results: [data],
+        results: data,
       });
     } catch (error) {
       next(error);
@@ -29,6 +29,22 @@ export class ProductsController {
     try {
       const getId = req.params.id;
       const data = await this.repo.queryId(getId);
+      resp.json({
+        results: data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getByKey(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const getKey = req.params.path;
+      const getValue = req.params.id;
+      const data = await this.repo.queryByKey({
+        key: getKey,
+        value: getValue,
+      });
       resp.json({
         results: data,
       });
@@ -76,7 +92,20 @@ export class ProductsController {
       const deleteId = req.params.id;
       const data = await this.repo.destroy(deleteId);
       resp.json({
-        results: [data],
+        results: data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteByKey(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const deleteKey = req.params.path;
+      const deleteValue = req.params.id;
+      const data = await this.repo.deleteByKey(deleteKey, deleteValue);
+      resp.json({
+        results: data,
       });
     } catch (error) {
       next(error);
@@ -90,6 +119,34 @@ export class ProductsController {
       resp.status(200);
       resp.json({
         results: [data],
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async leftJoinProductMovements(
+    req: Request,
+    resp: Response,
+    next: NextFunction
+  ) {
+    try {
+      // Const getId = req.params.id;
+      const data = await this.repo.leftJoinProductMovements();
+      resp.json({
+        results: data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async groupValuesPerField(req: Request, resp: Response, next: NextFunction) {
+    try {
+      const brandToGroup = req.params.id;
+      const data = await this.repo.groupValuesPerField(brandToGroup);
+      resp.json({
+        results: data,
       });
     } catch (error) {
       next(error);

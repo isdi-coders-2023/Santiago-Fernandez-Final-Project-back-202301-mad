@@ -6,6 +6,9 @@ const productMovementSchema = new Schema<ProductMovement>({
     type: String,
     required: true,
   },
+  batch: {
+    type: String,
+  },
   date: {
     type: String,
   },
@@ -15,17 +18,18 @@ const productMovementSchema = new Schema<ProductMovement>({
   typeId: {
     type: String,
   },
+
+  store: {
+    type: String,
+  },
   units: {
     type: Number,
   },
-  unitaryCost: {
+  costPerUnit: {
     type: Number,
   },
-  unitaryPrice: {
+  pricePerUnit: {
     type: Number,
-  },
-  userCreatorEmail: {
-    type: String,
   },
 });
 
@@ -40,5 +44,5 @@ productMovementSchema.set('toJSON', {
 export const ProductMovementModel = model(
   'ProductMovement',
   productMovementSchema,
-  'productMovements'
+  'productmovements'
 );

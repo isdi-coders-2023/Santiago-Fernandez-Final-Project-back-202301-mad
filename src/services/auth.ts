@@ -10,11 +10,6 @@ debug('Loaded');
 export interface PayloadToken extends jwt.JwtPayload {
   id: string;
   email: string;
-  // FirstName: string;
-  // lastName: string;
-  // role: string;
-  // image: string;
-  // lastLogging: string;
 }
 
 const salt = 10;

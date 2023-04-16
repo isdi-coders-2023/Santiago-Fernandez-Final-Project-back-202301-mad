@@ -19,7 +19,7 @@ export class ProductsMongoRepo {
     debug('Instantiated at constructor');
   }
 
-  async getByFilterWithPaginationAndOrder(query: {
+  async getByFilterWithPaginationAndOrder(filter: {
     filterField: string;
     filterValue: string;
     filterSet: number;
@@ -28,11 +28,11 @@ export class ProductsMongoRepo {
   }): Promise<Product[]> {
     debug('Instantiated at constructor at getByFilterWithPagination method');
     const data = await ProductModel.find({
-      [query.filterField]: query.filterValue,
+      [filter.filterField]: filter.filterValue,
     })
-      .skip((query.filterSet - 1) * query.filterRecordsPerSet)
-      .limit(query.filterRecordsPerSet)
-      .sort(query.orderField);
+      .skip((filter.filterSet - 1) * filter.filterRecordsPerSet)
+      .limit(filter.filterRecordsPerSet)
+      .sort(filter.orderField);
 
     return data;
   }
@@ -44,9 +44,41 @@ export class ProductsMongoRepo {
     return data;
   }
 
+  async leftJoinProductMovements(): Promise<unknown[]> {
+    debug('Instantiated at constructor at stockById method');
+    const data = await ProductModel.aggregate([
+      {
+        $lookup: {
+          from: 'productmovements',
+          localField: 'sku',
+          foreignField: 'productSku',
+          as: 'resultLeftJoin',
+        },
+      },
+    ]);
+
+    if (!data)
+      throw new HTTPError(404, 'Not found', 'Id not found in stockById');
+    return data;
+  }
+
+  async queryByKey(query: { key: string; value: unknown }): Promise<Product[]> {
+    debug('Instantiated at constructor at queryByKey method');
+    const data = await ProductModel.find({ [query.key]: query.value });
+    if (!data)
+      throw new HTTPError(404, 'Not found', 'Value not found in queryByKey');
+    return data;
+  }
+
   async create(info: Partial<Product>): Promise<Product> {
     debug('Instantiated at constructor at create method');
     const data = await ProductModel.create(info);
+    if (!data)
+      throw new HTTPError(
+        404,
+        'Not possible to create a new record',
+        'Not possible to create a new record'
+      );
     return data;
   }
 
@@ -71,6 +103,18 @@ export class ProductsMongoRepo {
       );
   }
 
+  async deleteByKey(deleteKey: string, deleteValue: string): Promise<void> {
+    const data = await ProductModel.findByIdAndDelete({
+      [deleteKey]: deleteValue,
+    });
+    if (!data)
+      throw new HTTPError(
+        404,
+        'Not found',
+        'Delete not possible: key and value not found'
+      );
+  }
+
   async countFilteredRecords(query: {
     filterField: string;
     filterValue: string;
@@ -80,5 +124,26 @@ export class ProductsMongoRepo {
       [query.filterField]: query.filterValue,
     }).countDocuments();
     return data;
+  }
+
+  async groupValuesPerField(field: string): Promise<unknown[]> {
+    debug('Instantiated at constructor at groupValuesPerField method');
+    const data = await ProductModel.aggregate([
+      {
+        $group: {
+          _id: '$' + field,
+          value: {
+            $min: '$' + field,
+          },
+        },
+      },
+    ]);
+
+    if (!data)
+      throw new HTTPError(404, 'Not found', 'Id not found in stockById');
+
+    const dataMap = data.map((item: any) => item.value, 'brand');
+
+    return dataMap;
   }
 }

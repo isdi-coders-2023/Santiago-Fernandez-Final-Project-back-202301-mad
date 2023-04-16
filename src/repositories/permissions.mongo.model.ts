@@ -12,6 +12,9 @@ const permissionSchema = new Schema<Permission>({
   permission: {
     type: String,
   },
+  active: {
+    type: Boolean,
+  },
 });
 
 permissionSchema.set('toJSON', {
